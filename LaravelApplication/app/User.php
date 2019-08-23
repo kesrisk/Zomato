@@ -43,7 +43,45 @@ class User extends Authenticatable
         return $this->hadMany(Order::class);
     }
 
-    public function address(){
-        return $this->hasMany(Address::class);
+    public function address()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+        // $addresses = $addresses->map(function($address){
+        //     return [
+        //         'id' => $address->id,
+        //         'state' => $address->state->name,
+        //         'district' => $address->district->name,
+        //         'street' => $address->street,
+        //         'addressable_id' => $address->addressable_id,
+        //         'addressable_type' => $address->addressable_type,
+        //         'created_at' => $address->created_at,
+        //         'updated_at' => $address->updated_at,
+        //     ];
+        // });
+        // return $addresses;
     }
+
+    public function likes()
+    {
+        // return $this->morphMany(Like::class, 'likeable');
+        return $this->hasMany(Like::class);
+
+    }
+
+    public function comments()
+    {
+        // return $this->morphMany(Comment::class, 'commentable');
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
 }

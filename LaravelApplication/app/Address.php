@@ -6,5 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    //
+    public function addressable()
+    {
+        return $this->morphTo();
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }

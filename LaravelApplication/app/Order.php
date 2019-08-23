@@ -18,7 +18,13 @@ class Order extends Model
 
     public function address()
     {
-        return $this->belongsTo(Address::class);
+        return $this->morphOne(Address::class, 'addressable');
     }
+
+    public function promocode()
+    {
+        return $this->belongsTo(Promocode::class);
+    }
+
 
 }

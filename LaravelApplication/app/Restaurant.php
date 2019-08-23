@@ -13,12 +13,12 @@ class Restaurant extends Model
 
     public function address()
     {
-        return $this->belongsTo(Address:: class);
+        return $this->morphOne(Address:: class, 'addressable');
     }
 
     public function attachments()
     {
-        return $this->hasMany(Attachment::class, ['category' => 'Restaurant', 'related_id' => $this->id]);
+        return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
     public function reviews()
