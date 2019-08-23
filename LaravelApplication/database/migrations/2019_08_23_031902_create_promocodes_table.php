@@ -16,7 +16,7 @@ class CreatePromocodesTable extends Migration
         Schema::create('promocodes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
-            $table->integer('discount');
+            $table->float('discount');
             $table->integer('maximum_discount');
             $table->timestamp('valid_upto')->nullable();
             $table->timestamps();

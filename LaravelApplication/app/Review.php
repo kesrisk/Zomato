@@ -29,7 +29,7 @@ class Review extends Model
 
     public function attachment()
     {
-        return $this->morphMany(Attachment:: class, 'attachmentable');
+        return $this->morphMany(Attachment:: class, 'attachable');
     }
 }
 

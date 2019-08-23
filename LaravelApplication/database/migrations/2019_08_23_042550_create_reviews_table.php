@@ -18,7 +18,7 @@ class CreateReviewsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('restaurant_id');
             $table->float('rating');
-            $table->text('comment')->nullable();
+            $table->text('text')->nullable();
 
             $table->timestamps();
         });
