@@ -82,7 +82,7 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-    public function carts()
+    public function cart()
     {
         return $this->hasOne(Cart::class);
     }

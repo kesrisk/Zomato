@@ -20,3 +20,7 @@ use Illuminate\Http\Request;
 
 Route::post('register', 'userController@register');
 Route::post('login', 'userController@login');
+
+Route::resource('restaurants', 'RestaurantController');
+
+Route::get('restaurants/{id}/address', 'RestaurantController@address');

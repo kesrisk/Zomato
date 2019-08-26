@@ -24,7 +24,7 @@ class UserController extends Controller
 
 
         $user = User::create($data);
-        // $user->cart()->create();
+        $user->cart()->create();
 
         $success['token'] = $user->createToken('authToken')->accessToken;
         $success['name'] =  $user->name;
