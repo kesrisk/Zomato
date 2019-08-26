@@ -104,4 +104,11 @@ class RestaurantController extends Controller
         $restaurant->attachments()->create($request->all());
         return response(['success'=>'success']);
     }
+
+
+    public function addReview($id, Request $request)
+    {
+        $restaurant = Restaurant::findOrFail($id);
+        return $restaurant->reviews()->create($request->all());
+    }
 }
