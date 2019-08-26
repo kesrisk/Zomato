@@ -96,4 +96,12 @@ class RestaurantController extends Controller
     {
         return Restaurant::findOrFail($id)->address;
     }
+
+
+    public function addAttachment($id, Request $request)
+    {
+        $restaurant = Restaurant::findOrFail($id);
+        $restaurant->attachments()->create($request->all());
+        return response(['success'=>'success']);
+    }
 }
