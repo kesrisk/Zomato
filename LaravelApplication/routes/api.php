@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 Route::post('register', 'userController@register');
 Route::post('login', 'userController@login');
 
+
+
 Route::resource('restaurants', 'RestaurantController');
 Route::get('restaurants/{id}/address', 'RestaurantController@address');
 Route::post('restaurants/{id}/attach', 'RestaurantController@addAttachment');
@@ -30,3 +32,8 @@ Route::post('restaurants/{id}/review', 'RestaurantController@addReview');
 
 Route::post('attachments/{id}/comment', 'AttachmentController@storeComment');
 Route::post('attachments/{id}/like', 'AttachmentController@toggleLike');
+
+
+
+Route::post('review/{id}/comment', 'ReviewController@storeComment');
+Route::post('review/{id}/like', 'ReviewController@toggleLike');
