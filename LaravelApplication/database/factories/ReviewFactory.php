@@ -4,7 +4,7 @@
 
 use App\Review;
 use App\User;
-App\Restaurant;
+use App\Restaurant;
 use Faker\Generator as Faker;
 
 $factory->define(Review::class, function (Faker $faker) {

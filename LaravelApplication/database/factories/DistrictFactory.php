@@ -7,6 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(District::class, function (Faker $faker) {
     return [
-        'name' => $faker->word
+        'name' => $faker->word,
+        'state_id' => function(){
+            return factory(App\State::class)->create()->id;
+        }
     ];
 });
