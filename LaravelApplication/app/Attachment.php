@@ -13,4 +13,14 @@ class Attachment extends Model
     {
         return $this->morphTo();
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class,'likeable');
+    }
 }
