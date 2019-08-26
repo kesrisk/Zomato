@@ -27,7 +27,6 @@ class AttachmentController extends Controller
     public function toggleLike($id, Request $request)
     {
         $user_id = $request['user_id'];
-        $like = false;
         $attachment = Attachment::findOrFail($id);
 
         $likes = $attachment->likes;
@@ -41,8 +40,6 @@ class AttachmentController extends Controller
         }
         $attachment->likes()->create(['user_id' => $request['user_id']]);
         return ['like_added' => true];
-
-
 
     }
 }
