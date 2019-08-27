@@ -18,10 +18,12 @@ use Illuminate\Http\Request;
 // });
 
 
-Route::post('register', 'userController@register');
-Route::post('login', 'userController@login');
-Route::middleware(['auth:api'])->get('address', 'userController@address');
-Route::middleware(['auth:api'])->post('address', 'userController@addAddress');
+Route::post('register', 'UserController@register');
+Route::post('login', 'UserController@login');
+Route::middleware(['auth:api'])->get('address', 'UserController@address');
+Route::middleware(['auth:api'])->post('address', 'UserController@addAddress');
+Route::middleware(['auth:api'])->post('carts', 'CartController@addToCart');
+
 
 
 
