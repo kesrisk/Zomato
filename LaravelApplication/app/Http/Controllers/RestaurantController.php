@@ -49,10 +49,11 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function cuisines($id)
     {
 
-        return Restaurant::findOrFail($id)->cuisines;
+        $data = Restaurant::findOrFail($id)->cuisines()->paginate(1);
+        return $this->transformer->transformPaginationList($data);
     }
 
     /**
