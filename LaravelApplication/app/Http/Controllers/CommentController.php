@@ -13,7 +13,7 @@ class CommentController extends Controller
      * @input type(commentable type), id(of commentable type), user_id
      *
      */
-    public function storeComment(Request $request)
+    public function store(Request $request)
     {
         $data = [
             'user_id' => $request['user_id'],

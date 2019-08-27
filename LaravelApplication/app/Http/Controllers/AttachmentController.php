@@ -18,6 +18,16 @@ class AttachmentController extends Controller
         return Attachment::findOrFail($id)->comments;
     }
 
+    public function store(Request $request)
+    {
+        $data = [
+            'attachable_id' => $request['id'],
+            'attachable_type' => $request['type'],
+            'image_url' => $request['image_url']
+        ];
+        return Attachment::create($data);
+    }
+
     // public function storeComment($id, Request $request)
     // {
     //     $attachment = Attachment::findOrFail($id);

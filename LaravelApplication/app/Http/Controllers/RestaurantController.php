@@ -7,9 +7,18 @@ use App\Http\Requests\CreateRestaurantRequest;
 use Illuminate\Http\Request;
 use App\Restaurant;
 use App\State;
+use App\Transformers\RestaurantTransformer;
 
 class RestaurantController extends Controller
 {
+
+    private $transformer;
+
+    public function __construct(RestaurantTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,19 +39,14 @@ class RestaurantController extends Controller
     public function store(CreateRestaurantRequest $request)
     {
 
+        $data = $request->all();
 
-        $restaurant = [
-            'name' => $request['name'],
-            'description' => $request['description'],
-            'phone_number' => $request['phone_number']
-        ];
+        $restaurant = $this->transformer->restaurant($data);
+
         $restaurant = Restaurant::create($restaurant);
-        // return($restaurant);
-        $address = $restaurant->address()->create([
-            'state_id' => $request['state_id'],
-            'district_id' => $request['district_id'],
-            'street' => $request['street'],
-        ]);
+
+        $address = $restaurant->address()->create($this->transformer->address($data));
+
         return response(['restaurant' => $restaurant, 'address' => $address]);
     }
 
@@ -98,17 +102,20 @@ class RestaurantController extends Controller
     }
 
 
-    public function addAttachment($id, Request $request)
-    {
-        $restaurant = Restaurant::findOrFail($id);
-        $restaurant->attachments()->create($request->all());
-        return response(['success'=>'success']);
-    }
+    // public function addAttachment($id, Request $request)
+    // {
+    //     $restaurant = Restaurant::findOrFail($id);
+
+    //     $restaurant->attachments()->create($request->all());
+
+    //     return response(['success'=>'success']);
+    // }
 
 
     public function addReview($id, Request $request)
     {
         $restaurant = Restaurant::findOrFail($id);
+
         return $restaurant->reviews()->create($request->all());
     }
 }
