@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\District;
 use App\Http\Requests\CreateRestaurantRequest;
+use App\Http\Tasks\CreateRestaurantTask;
 use Illuminate\Http\Request;
 use App\Restaurant;
 use App\State;
@@ -36,18 +37,10 @@ class RestaurantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRestaurantRequest $request)
+    public function store(CreateRestaurantRequest $request, CreateRestaurantTask $task)
     {
 
-        $data = $request->all();
-
-        $restaurant = $this->transformer->restaurant($data);
-
-        $restaurant = Restaurant::create($restaurant);
-
-        $address = $restaurant->address()->create($this->transformer->address($data));
-
-        return response(['restaurant' => $restaurant, 'address' => $address]);
+        return $this->transformer->store($task->handle($request->all()));
     }
 
     /**
@@ -58,6 +51,7 @@ class RestaurantController extends Controller
      */
     public function show($id)
     {
+
         return Restaurant::findOrFail($id)->cuisines;
     }
 
@@ -100,16 +94,6 @@ class RestaurantController extends Controller
     {
         return Restaurant::findOrFail($id)->address;
     }
-
-
-    // public function addAttachment($id, Request $request)
-    // {
-    //     $restaurant = Restaurant::findOrFail($id);
-
-    //     $restaurant->attachments()->create($request->all());
-
-    //     return response(['success'=>'success']);
-    // }
 
 
     public function addReview($id, Request $request)

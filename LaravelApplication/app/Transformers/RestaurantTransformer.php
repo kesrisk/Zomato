@@ -2,23 +2,19 @@
 
 namespace App\Transformers;
 
+use App\State;
+
 class RestaurantTransformer
 {
-    public function restaurant($data)
+    public function store($data)
     {
         return [
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'phone_number' => $data['phone_number']
-        ];
-    }
-
-    public function address($data)
-    {
-        return [
-            'state_id' => $data['state_id'],
-            'district_id' => $data['district_id'],
-            'street' => $data['street'],
+            'name' => $data['restaurant']->name,
+            'description' => $data['restaurant']->description,
+            'phone_number' => $data['restaurant']->phone_number,
+            'state' => State::findOrFail($data['address']->state_id)->name,
+            'district' => State::findOrFail($data['address']->district_id)->name,
+            'street' => $data['address']->street,
         ];
     }
 }
