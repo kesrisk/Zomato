@@ -22,7 +22,7 @@ Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::middleware(['auth:api'])->get('address', 'UserController@address');
 Route::middleware(['auth:api'])->post('address', 'UserController@addAddress');
-// Route::middleware(['auth:api'])->post('carts', 'CartController@addToCart');
+Route::middleware(['auth:api'])->get('carts', 'CartController@index');
 Route::middleware(['auth:api'])->post('carts/{restaurant_id}/{cuisine_id}', 'CartController@addToCart');
 
 
