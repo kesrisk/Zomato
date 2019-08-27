@@ -91,6 +91,12 @@ class RestaurantController extends Controller
     }
 
 
+    public function attachments($id)
+    {
+        return Restaurant::findOrFail($id)->attachments;
+    }
+
+
     public function address($id)
     {
         return Restaurant::findOrFail($id)->address;

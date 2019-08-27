@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 
 Route::post('register', 'userController@register');
 Route::post('login', 'userController@login');
+Route::middleware(['auth:api'])->get('address', 'userController@address');
+Route::middleware(['auth:api'])->post('address', 'userController@addAddress');
 
 
 
