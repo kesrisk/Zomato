@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
 
     public function cuisines()
     {

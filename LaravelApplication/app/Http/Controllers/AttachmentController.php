@@ -18,28 +18,28 @@ class AttachmentController extends Controller
         return Attachment::findOrFail($id)->comments;
     }
 
-    public function storeComment($id, Request $request)
-    {
-        $attachment = Attachment::findOrFail($id);
-        return $attachment->comments()->create($request->all());
-    }
+    // public function storeComment($id, Request $request)
+    // {
+    //     $attachment = Attachment::findOrFail($id);
+    //     return $attachment->comments()->create($request->all());
+    // }
 
-    public function toggleLike($id, Request $request)
-    {
-        $user_id = $request['user_id'];
-        $attachment = Attachment::findOrFail($id);
+    // public function toggleLike($id, Request $request)
+    // {
+    //     $user_id = $request['user_id'];
+    //     $attachment = Attachment::findOrFail($id);
 
-        $likes = $attachment->likes;
+    //     $likes = $attachment->likes;
 
-        $likes = $likes->firstWhere('user_id' , $user_id);
+    //     $likes = $likes->firstWhere('user_id' , $user_id);
 
-        if ($likes !== null)
-        {
-            Like::findOrFail($likes->id)->delete();
-            return ['like removed' => true];
-        }
-        $attachment->likes()->create(['user_id' => $request['user_id']]);
-        return ['like_added' => true];
+    //     if ($likes !== null)
+    //     {
+    //         Like::findOrFail($likes->id)->delete();
+    //         return ['like removed' => true];
+    //     }
+    //     $attachment->likes()->create(['user_id' => $request['user_id']]);
+    //     return ['like_added' => true];
 
-    }
+    // }
 }

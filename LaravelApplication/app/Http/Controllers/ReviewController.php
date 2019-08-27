@@ -20,27 +20,27 @@ class ReviewController extends Controller
         return $review->likes;
     }
 
-    public function storeComment($id, Request $request)
-    {
-        $review = Review::findOrFail($id);
-        return $review->comments()->create($request->all());
-    }
+    // public function storeComment($id, Request $request)
+    // {
+    //     $review = Review::findOrFail($id);
+    //     return $review->comments()->create($request->all());
+    // }
 
-    public function toggleLike($id, Request $request)
-    {
-        $user_id = $request['user_id'];
-        $review = Review::findOrFail($id);
-        $likes = $this->likes($id);
+    // public function toggleLike($id, Request $request)
+    // {
+    //     $user_id = $request['user_id'];
+    //     $review = Review::findOrFail($id);
+    //     $likes = $this->likes($id);
 
-        $likes = $likes->firstWhere('user_id' , $user_id);
+    //     $likes = $likes->firstWhere('user_id' , $user_id);
 
-        if ($likes !== null)
-        {
-            Like::findOrFail($likes->id)->delete();
-            return ['like removed' => true];
-        }
-        $review->likes()->create(['user_id' => $request['user_id']]);
-        return ['like_added' => true];
+    //     if ($likes !== null)
+    //     {
+    //         Like::findOrFail($likes->id)->delete();
+    //         return ['like removed' => true];
+    //     }
+    //     $review->likes()->create(['user_id' => $request['user_id']]);
+    //     return ['like_added' => true];
 
-    }
+    // }
 }

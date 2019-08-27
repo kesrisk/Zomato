@@ -8,7 +8,8 @@ use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 class Review extends Model
 {
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
 
     public function user()
     {

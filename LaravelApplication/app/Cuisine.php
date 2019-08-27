@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cuisine extends Model
 {
+    protected $guarded = ['id'];
+
     public function orders()
     {
         return $this->belongsToMany(Order::class);

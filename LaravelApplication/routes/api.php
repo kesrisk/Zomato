@@ -30,10 +30,14 @@ Route::post('restaurants/{id}/review', 'RestaurantController@addReview');
 
 
 
-Route::post('attachments/{id}/comment', 'AttachmentController@storeComment');
-Route::post('attachments/{id}/like', 'AttachmentController@toggleLike');
+// Route::post('attachments/{id}/comment', 'AttachmentController@storeComment');
+// Route::post('attachments/{id}/like', 'AttachmentController@toggleLike');
 
 
 
-Route::post('review/{id}/comment', 'ReviewController@storeComment');
-Route::post('review/{id}/like', 'ReviewController@toggleLike');
+// Route::post('review/{id}/comment', 'ReviewController@storeComment');
+// Route::post('review/{id}/like', 'ReviewController@toggleLike');
+
+
+Route::post('likes', 'LikeController@toggleLike');
+Route::post('comments', 'CommentController@storeComment');
