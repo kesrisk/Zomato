@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
+    protected $guarded = ['id'];
+
+
     public function cuisines()
     {
         return $this->belongsToMany(Cuisine::class)->withPivot('cost');

@@ -20,7 +20,8 @@ class User extends Authenticatable
     //     'name', 'email', 'password', 'phone_number'
     // ];
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -82,7 +83,7 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-    public function carts()
+    public function cart()
     {
         return $this->hasOne(Cart::class);
     }

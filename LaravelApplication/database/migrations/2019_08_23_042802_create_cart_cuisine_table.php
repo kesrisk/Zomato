@@ -17,6 +17,7 @@ class CreateCartCuisineTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('cuisine_id');
             $table->unsignedBigInteger('cart_id');
+            $table->bigInteger('quantity');
             $table->timestamps();
 
             $table->foreign('cuisine_id')->references('id')->on('cuisines');
