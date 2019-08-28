@@ -17,14 +17,14 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('promocode_id');
+            $table->unsignedBigInteger('promocode_id')->nullable()->default(null);
             $table->integer('total');
             $table->integer('final_total');
             $table->timestamps();
 
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('promocode_id')->references('id')->on('promocodes');
+            // $table->foreign('promocode_id')->references('id')->on('promocodes');
 
         });
     }

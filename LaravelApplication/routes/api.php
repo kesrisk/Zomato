@@ -33,7 +33,11 @@ Route::middleware(['auth:api'])->group(function(){
 
     Route::post('carts/{restaurant_id}/{cuisine_id}', 'CartController@addToCart');
 
-    Route::post('orders/{restaurant_id}', 'OrderController@placeOrder');
+    Route::post('orders/{restaurant_id}', 'OrderController@store');
+
+    Route::get('orders/', 'OrderController@index');
+
+    Route::get('orders/{id}', 'OrderController@show');
 });
 
 

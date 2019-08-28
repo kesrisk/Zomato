@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\Promocode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,26 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
 
+    public function index()
+    {
+        $user = Auth::user();
+
+        $orders = $user->orders;
+
+        return $orders;
+    }
+
+    public function show($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $cuisines = $order->cuisines;
+
+        return $cuisines;
+    }
 
 
-    public function placeOrder(Request $request, $restaurant_id)
+    public function store(Request $request, $restaurant_id)
     {
 
         $GLOBALS['total'] = 0;
@@ -33,12 +51,17 @@ class OrderController extends Controller
 
         $cuisines = $cart->cuisines;
 
+        if (count($cuisines) === 0)
+        {
+            return response('cart is empty', 200);
+        }
+
 
         $cuisines = $cuisines->map(function($cuisine) use ($restaurant_id){
 
             $cost = DB::table('cuisine_restaurant')->where('cuisine_id', $cuisine['id'])->where('restaurant_id', $restaurant_id)->get()[0]->cost;
 
-            $GLOBALS['total'] += $cost;
+            $GLOBALS['total'] += $cost * $cuisine->pivot['quantity'];
 
             return [
                 'cuisine_id'    => $cuisine['id'],
@@ -78,6 +101,7 @@ class OrderController extends Controller
             $order->cuisines()->attach([$cuisine['cuisine_id'] => ['quantity' => $cuisine['quantity'], 'cost' => $cuisine['cost']]]);
         }
 
+        $cart->clear();
 
         return response('success', 200);
     }

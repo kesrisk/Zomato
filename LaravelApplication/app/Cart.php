@@ -17,4 +17,9 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function clear()
+    {
+        $this->cuisines()->detach();
+    }
 }
