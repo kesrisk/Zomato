@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('promocode_id');
             $table->integer('total');
+            $table->integer('final_total');
             $table->timestamps();
 
             $table->foreign('address_id')->references('id')->on('addresses');

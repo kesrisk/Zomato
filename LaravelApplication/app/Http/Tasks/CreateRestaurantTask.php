@@ -20,9 +20,10 @@ class CreateRestaurantTask
             'street'        => $data['street'],
         ]);
 
-        return [
-            'restaurant'    => $restaurant,
-            'address'       => $address,
-        ];
+        // return [
+        //     'restaurant'    => $restaurant,
+        //     'address'       => $address,
+        // ];
+        return response('successfully created', 200);
     }
 }

@@ -40,7 +40,7 @@ class RestaurantController extends Controller
     public function store(CreateRestaurantRequest $request, CreateRestaurantTask $task)
     {
 
-        return $this->transformer->store($task->handle($request->all()));
+        return $task->handle($request->all());
     }
 
     /**

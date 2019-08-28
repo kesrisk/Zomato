@@ -20,11 +20,21 @@ use Illuminate\Http\Request;
 
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
-Route::middleware(['auth:api'])->get('address', 'UserController@address');
-Route::middleware(['auth:api'])->post('address', 'UserController@addAddress');
-Route::middleware(['auth:api'])->get('carts', 'CartController@index');
-Route::middleware(['auth:api'])->post('carts/{restaurant_id}/{cuisine_id}', 'CartController@addToCart');
 
+
+
+Route::middleware(['auth:api'])->group(function(){
+
+    Route::get('address', 'UserController@address');
+
+    Route::post('address', 'UserController@addAddress');
+
+    Route::get('carts/{restaurant_id}', 'CartController@index');
+
+    Route::post('carts/{restaurant_id}/{cuisine_id}', 'CartController@addToCart');
+
+    Route::post('orders/{restaurant_id}', 'OrderController@placeOrder');
+});
 
 
 
@@ -32,18 +42,8 @@ Route::resource('restaurants', 'RestaurantController');
 
 Route::get('/restaurants/{id}/cuisines', 'RestaurantController@cuisines');
 Route::get('restaurants/{id}/address', 'RestaurantController@address');
-// Route::post('restaurants/{id}/attach', 'RestaurantController@addAttachment');
 Route::post('restaurants/{id}/review', 'RestaurantController@addReview');
 
-
-
-// Route::post('attachments/{id}/comment', 'AttachmentController@storeComment');
-// Route::post('attachments/{id}/like', 'AttachmentController@toggleLike');
-
-
-
-// Route::post('review/{id}/comment', 'ReviewController@storeComment');
-// Route::post('review/{id}/like', 'ReviewController@toggleLike');
 
 
 Route::post('likes', 'LikeController@toggleLike');

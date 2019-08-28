@@ -5,35 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Transformers\CartTransformer;
 
 class CartController extends Controller
 {
+    private $transform;
 
-    public function index()
+    public function __construct(CartTransformer $transform){
+        $this->transform = $transform;
+    }
+
+    public function index($restaurant_id)
     {
         $user = Auth::user();
 
         $cart = $user->cart;
 
+        if(intval($restaurant_id) !== $cart['restaurant_id'])
+        {
+            return response([]);
+        }
+
         $cuisines = $cart->cuisines;
 
-        //cost of cuisine????
-        $restaurant_id = $cart['restaurant_id'];
-
-        return $cuisines->map(function($cuisine) use ($restaurant_id){
-
-            $costQuerry = DB::table('cuisine_restaurant')->where('cuisine_id', $cuisine['id'])->where('restaurant_id', $restaurant_id)->get('cost');
-
-            $cost = $costQuerry[0]->cost;
-
-            return [
-                'id' => $cuisine['id'],
-                'name' => $cuisine['name'],
-                'description' => $cuisine['description'],
-                'quantity' => $cuisine->pivot['quantity'],
-                'cost' => $cost,
-            ];
-        });
+        return $this->transform->transformCollection($cuisines, ['restaurant_id'=>$cart['restaurant_id']], true);
 
     }
 
@@ -45,7 +40,7 @@ class CartController extends Controller
 
         $restaurant_id = intVal($restaurant_id);
 
-        if($cart->restaurant_id === null || $cart->restaurant_id == $restaurant_id)
+        if($cart->restaurant_id === null || $cart->restaurant_id === $restaurant_id)
         {
             if($cart->restautant_id === null)
             {

@@ -5,7 +5,7 @@ namespace App\Transformers;
 use App\District;
 use App\State;
 
-class UserTransformer{
+class UserTransformer extends ApiTransformer{
 
     public function address($data)
     {

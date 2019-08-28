@@ -17,6 +17,8 @@ class CreateCuisineOrderTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('cuisine_id');
             $table->unsignedBigInteger('order_id');
+            $table->integer('cost');
+            $table->integer('quantity');
             $table->timestamps();
 
             $table->foreign('cuisine_id')->references('id')->on('cuisines');
