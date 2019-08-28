@@ -13,11 +13,11 @@ class CartTransformer extends ApiTransformer{
         $cost = DB::table('cuisine_restaurant')->where('cuisine_id', $item['id'])->where('restaurant_id', $relations['restaurant_id'])->get()[0]->cost;
 
         return [
-            'id' => $item['id'],
-            'name' => $item['name'],
-            'description' => $item['description'],
-            'quantity' => $item->pivot['quantity'],
-            'cost' => $cost,
+            'id'            => $item['id'],
+            'name'          => $item['name'],
+            'description'   => $item['description'],
+            'quantity'      => $item->pivot['quantity'],
+            'cost'          => $cost,
         ];
     }
 }

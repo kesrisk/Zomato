@@ -71,15 +71,21 @@ class OrderController extends Controller
             ];
         });
 
-        $discount = 0;
+        $discountPercent = 0;
+        $maxDiscount = 0;
 
         if($request['promocode_id'] !== null)
         {
             $promocode = Promocode::findOrFail($request['promocode_id']);
-            $discount = $promocode['discount'];
+            $discountPercent = $promocode['discount'];
+            $maxDiscount = $promocode['maximum_discount'];
         }
 
-        $final_total = $GLOBALS['total'] - $GLOBALS['total'] * $discount / 100;
+        $discount = $GLOBALS['total'] * $discountPercent / 100;
+
+        $discount = $discount < $maxDiscount? $discount : $maxDiscount;
+
+        $final_total = $GLOBALS['total'] - $discount;
 
 
 
