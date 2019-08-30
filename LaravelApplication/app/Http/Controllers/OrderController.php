@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Tasks\OrderTask\CreateOrderTask;
+use App\Jobs\SendEmailJob;
 use App\Order;
 use App\Promocode;
 use App\Repositories\OrderRepository;
@@ -56,7 +57,11 @@ class OrderController extends Controller
     public function store(Request $request, CreateOrderTask $task)
     {
 
-        return $task->handle($request->all());
+        $data = $task->handle($request->all());
+
+        dispatch(new SendEmailJob($data['orders'], $data['cuisines']))->onQueue('email');
+
+        return response('success', 200);
     }
 
 }

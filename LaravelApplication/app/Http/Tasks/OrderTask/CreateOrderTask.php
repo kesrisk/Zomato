@@ -40,24 +40,25 @@ class CreateOrderTask{
 
             return [
                 'cuisine_id'    => $cuisine['id'],
+                'name'          => $cuisine['name'],
                 'quantity'      => $cuisine->pivot['quantity'],
                 'cost'          => $cost,
             ];
         });
     }
 
-    public function discount($promocode)
+    public function discount($promocode_id)
     {
         $discountPercent = 0;
         $maxDiscount = 0;
 
-        if($promocode !== null)
+        if($promocode_id !== null)
         {
-            $promocode = $this->promocodeRepository->findByName($promocode);
+            $promocode_id = $this->promocodeRepository->find($promocode_id);
 
-            $discountPercent = $promocode['discount'];
+            $discountPercent = $promocode_id['discount'];
 
-            $maxDiscount = $promocode['maximum_discount'];
+            $maxDiscount = $promocode_id['maximum_discount'];
         }
 
         $discount = $GLOBALS['total'] * $discountPercent / 100;
@@ -71,7 +72,7 @@ class CreateOrderTask{
     {
         $orderDetails = [
             'address_id'        => $data['address_id'],
-            'promocode'        => $data['promocode'],
+            'promocode_id'        => $data['promocode_id'],
             'total'             => $GLOBALS['total'],
             'final_total'       => $final_total
         ];
@@ -92,7 +93,7 @@ class CreateOrderTask{
 
     public function handle($data)
     {
-        $restaurant_id = $data['restaurant_id'];
+        $restaurant_id = intval($data['restaurant_id']);
 
         $GLOBALS['total'] = 0;
 
@@ -113,7 +114,7 @@ class CreateOrderTask{
 
         $cuisines = $this->transformCuisines($cuisines, $restaurant_id);
 
-        $discount = $data['promocode']? $this->discount($data['promocode']): 0;
+        $discount = $data['promocode_id']? $this->discount($data['promocode_id']): 0;
 
         $final_total = $GLOBALS['total'] - $discount;
 
@@ -123,6 +124,6 @@ class CreateOrderTask{
 
         $cart->clear();
 
-        return response('success', 200);
+        return ['orders' => $order, 'cuisines' => $cuisines];
     }
 }
