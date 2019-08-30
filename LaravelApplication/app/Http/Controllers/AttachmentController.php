@@ -3,53 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Attachment;
+use App\Http\Requests\CreateCommentRequest;
 use App\Like;
+use App\Repositories\AttachmentRepository;
+use App\Traits\LikeTrait;
+use App\Traits\CommentTrait;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
+
+    use CommentTrait, LikeTrait;
+
+    private $repository;
+
+    public function __construct(AttachmentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function likes($id)
     {
-        return Attachment::findOrFail($id)->likes;
+        return $this->repository->likes($id);
     }
 
     public function comments($id)
     {
-        return Attachment::findOrFail($id)->comments;
+        return $this->repository->comments($id);
     }
 
-    public function store(Request $request)
+    public function toggleLike($id)
     {
-        $data = [
-            'attachable_id' => $request['id'],
-            'attachable_type' => $request['type'],
-            'image_url' => $request['image_url']
-        ];
-        return Attachment::create($data);
+        return $this->like($this->repository->find($id));
     }
 
-    // public function storeComment($id, Request $request)
-    // {
-    //     $attachment = Attachment::findOrFail($id);
-    //     return $attachment->comments()->create($request->all());
-    // }
+    public function addComments(CreateCommentRequest $request, $id)
+    {
+        return $this->create($this->repository->find($id), $request['comment']);
+    }
 
-    // public function toggleLike($id, Request $request)
-    // {
-    //     $user_id = $request['user_id'];
-    //     $attachment = Attachment::findOrFail($id);
-
-    //     $likes = $attachment->likes;
-
-    //     $likes = $likes->firstWhere('user_id' , $user_id);
-
-    //     if ($likes !== null)
-    //     {
-    //         Like::findOrFail($likes->id)->delete();
-    //         return ['like removed' => true];
-    //     }
-    //     $attachment->likes()->create(['user_id' => $request['user_id']]);
-    //     return ['like_added' => true];
-
-    // }
 }

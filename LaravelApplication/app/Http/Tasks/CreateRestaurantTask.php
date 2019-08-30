@@ -3,9 +3,12 @@
 namespace App\Http\Tasks;
 
 use App\Restaurant;
+use App\Traits\AddressTrait;
 
 class CreateRestaurantTask
 {
+    use AddressTrait;
+
     public function handle($data)
     {
         $restaurant = Restaurant::create([
@@ -14,16 +17,13 @@ class CreateRestaurantTask
             'phone_number'  => $data['phone_number']
         ]);
 
-        $address = $restaurant->address()->create([
+        $this->createAddress($restaurant,
+        [
             'state_id'      => $data['state_id'],
             'district_id'   => $data['district_id'],
             'street'        => $data['street'],
         ]);
 
-        // return [
-        //     'restaurant'    => $restaurant,
-        //     'address'       => $address,
-        // ];
         return response('successfully created', 200);
     }
 }

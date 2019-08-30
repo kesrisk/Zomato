@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Tasks\CartTask\AddToCartTask;
+use App\Http\Tasks\CartTask\ShowCartTask;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Transformers\CartTransformer;
 
 class CartController extends Controller
@@ -12,53 +12,27 @@ class CartController extends Controller
     private $transform;
 
     public function __construct(CartTransformer $transform){
+
         $this->transform = $transform;
     }
 
-    public function index($restaurant_id)
+    public function index($restaurant_id, ShowCartTask $task)
     {
-        $user = Auth::user();
+        $data = $task->handle(intval($restaurant_id));
 
-        $cart = $user->cart;
-
-        if(intval($restaurant_id) !== $cart['restaurant_id'])
+        if($data)
         {
-            return response([]);
+            return $this->transform->transformCollection($data['cuisines'], ['restaurant_id'=>$data['restaurant_id']], true);
         }
 
-        $cuisines = $cart->cuisines;
-
-        return $this->transform->transformCollection($cuisines, ['restaurant_id'=>$cart['restaurant_id']], true);
+        return [];
 
     }
 
-    public function addToCart(Request $request, $restaurant_id, $cuisine_id)
+    public function addToCart(Request $request, $restaurant_id, $cuisine_id, AddToCartTask $task)
     {
-        $user = Auth::user();
 
-        $cart = $user->cart;
-
-        $restaurant_id = intVal($restaurant_id);
-
-        if($cart->restaurant_id === null || $cart->restaurant_id === $restaurant_id)
-        {
-            if($cart->restautant_id === null)
-            {
-                $cart->update(['restaurant_id' => $restaurant_id]);
-            }
-
-            $cart->cuisines()->attach($cuisine_id, ['quantity'=>1]);
-
-            return ['message' => 'successfully added to cart'];
-        }
-
-        $user->cart->cuisines()->detach();
-
-        $cart->update(['restaurant_id' => $restaurant_id]);
-
-        $cart->cuisines()->attach($cuisine_id);
-
-        return ['message' => 'successfully added to cart'];
+        return $task->handle(intval($restaurant_id), $cuisine_id);
     }
 
 

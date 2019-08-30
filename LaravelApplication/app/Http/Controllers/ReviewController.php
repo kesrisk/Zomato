@@ -2,45 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Like;
-use App\Review;
+use App\Http\Requests\CreateCommentRequest;
+use App\Repositories\ReviewRepository;
+use App\Traits\AttachmentTrait;
+use App\Traits\CommentTrait;
+use App\Traits\LikeTrait;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
+    use AttachmentTrait, CommentTrait, LikeTrait;
+
+    public $repository;
+
+    public function __construct(ReviewRepository $repository)
+    {
+
+        $this->repository = $repository;
+    }
+
     public function comments($id)
     {
-        $review = Review::findOrFail($id);
-        return $review->comments;
+
+        return $this->repository->comments($id);
     }
 
     public function likes($id)
     {
-        $review = Review::findOrFail($id);
-        return $review->likes;
+
+        return $this->repository->likes($id);
     }
 
-    // public function storeComment($id, Request $request)
-    // {
-    //     $review = Review::findOrFail($id);
-    //     return $review->comments()->create($request->all());
-    // }
+    public function addAttachments(Request $request, $id)
+    {
+        return $this->create($this->repository->find($id), $request['image_url']);
+    }
 
-    // public function toggleLike($id, Request $request)
-    // {
-    //     $user_id = $request['user_id'];
-    //     $review = Review::findOrFail($id);
-    //     $likes = $this->likes($id);
+    public function addComments(CreateCommentRequest $request, $id)
+    {
+        return $this->create($this->repository->find($id), $request['comment']);
+    }
 
-    //     $likes = $likes->firstWhere('user_id' , $user_id);
-
-    //     if ($likes !== null)
-    //     {
-    //         Like::findOrFail($likes->id)->delete();
-    //         return ['like removed' => true];
-    //     }
-    //     $review->likes()->create(['user_id' => $request['user_id']]);
-    //     return ['like_added' => true];
-
-    // }
+    public function toggleLike($id)
+    {
+        return $this->like($this->repository->find($id));
+    }
 }

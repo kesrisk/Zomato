@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAddressRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Tasks\UserTask\CreateAddressTask;
 use App\Http\Tasks\UserTask\LoginTask;
 use App\Http\Tasks\UserTask\RegisterTask;
+use App\Traits\AddressTrait;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use App\User;
@@ -14,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    use AddressTrait;
+
     private $transformer;
 
     public function __construct(UserTransformer $transformer)
@@ -52,9 +56,14 @@ class UserController extends Controller
      *
      * @return response user address
      */
-    public function addAddress(Request $request, CreateAddressTask $task)
+    public function addAddress(CreateAddressRequest $request)
     {
-        return $task->handle($request->all());
+        $data = [
+            'state_id'      => $request['state_id'],
+            'district_id'   => $request['district_id'],
+            'street'        => $request['street'],
+        ];
+        $this->createAddress(Auth::user(), $data);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCommentRequest extends FormRequest
+class CreateAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,10 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment'   => 'required'
+            'state_id'      => 'required',
+            'district_id'   => 'required',
+            'street'        => 'required'
+
         ];
     }
 }

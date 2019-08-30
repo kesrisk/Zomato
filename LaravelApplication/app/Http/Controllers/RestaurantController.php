@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 use App\District;
 use App\Http\Requests\CreateRestaurantRequest;
 use App\Http\Tasks\CreateRestaurantTask;
+use App\Repositories\RestaurantRepository;
 use Illuminate\Http\Request;
 use App\Restaurant;
 use App\State;
+use App\Traits\AttachmentTrait;
 use App\Transformers\RestaurantTransformer;
 
 class RestaurantController extends Controller
 {
+    use AttachmentTrait;
 
     private $transformer;
+    private $repository;
 
-    public function __construct(RestaurantTransformer $transformer)
+    public function __construct(RestaurantTransformer $transformer, RestaurantRepository $repository)
     {
         $this->transformer = $transformer;
+        $this->repository = $repository;
     }
 
     /**
@@ -27,7 +32,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return response(Restaurant::all());
+        return response($this->repository->all());
     }
 
 
@@ -52,7 +57,8 @@ class RestaurantController extends Controller
     public function cuisines($id)
     {
 
-        $data = Restaurant::findOrFail($id)->cuisines()->paginate(1);
+        $data = $this->repository->find($id)->cuisines()->paginate(1);
+
         return $this->transformer->transformPaginationList($data);
     }
 
@@ -93,20 +99,26 @@ class RestaurantController extends Controller
 
     public function attachments($id)
     {
-        return Restaurant::findOrFail($id)->attachments;
+
+        return $this->repository->attachments($id);
     }
 
 
     public function address($id)
     {
-        return Restaurant::findOrFail($id)->address;
+
+        return $this->repository->address($id);
     }
 
 
     public function addReview($id, Request $request)
     {
-        $restaurant = Restaurant::findOrFail($id);
 
-        return $restaurant->reviews()->create($request->all());
+        return $this->repository->addReview($id, $request->all());
+    }
+
+    public function addAttachment(Request $request, $id)
+    {
+        return $this->create($this->repository->find($id), $request['image_url']);
     }
 }

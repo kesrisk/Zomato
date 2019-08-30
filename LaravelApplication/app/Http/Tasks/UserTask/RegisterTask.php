@@ -2,23 +2,35 @@
 
 namespace App\Http\Tasks\UserTask;
 
+use App\Repositories\UserRepository;
 use App\User;
 
 class RegisterTask{
+
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+    public function token($user)
+    {
+        return $user->createToken('authToken')->accessToken;
+    }
+
     public function handle($data)
     {
         $data['password'] = bcrypt($data['password']);
 
         unset($data['password_confirmation']);
 
-        $user = User::create($data);
+        $user = $this->userRepository->create($data);
 
         $user->cart()->create();
 
-        $token = $user->createToken('authToken')->accessToken;
+        $token = $this->token($user);
 
-        $name =  $user->name;
-
-        return ['token' => $token, 'name' => $name];
+        return ['token' => $token, 'name' => $user->name];
     }
 }
