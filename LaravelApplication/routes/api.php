@@ -25,35 +25,43 @@ Route::post('login', 'UserController@login');
 
 Route::middleware(['auth:api'])->group(function(){
 
-    Route::get('address', 'UserController@address');
 
-    Route::post('address', 'UserController@addAddress');
+    // User routes
+    Route::get('user/address', 'UserController@address');
+    Route::post('user/address', 'UserController@addAddress');
+    Route::post('user/orders/place/{restaurant_id}', 'OrderController@store');
+    Route::get('user/orders/', 'OrderController@index');
+    Route::get('user/orders/{id}', 'OrderController@show');
 
+
+    // Cart routes
     Route::get('carts/{restaurant_id}', 'CartController@index');
-
     Route::post('carts/{restaurant_id}/{cuisine_id}', 'CartController@addToCart');
 
-    Route::post('orders/place/{restaurant_id}', 'OrderController@store');
 
-    Route::get('orders/', 'OrderController@index');
+    // reviews routes
+    Route::get('reviews/{id}/like', 'ReviewController@likes');
+    Route::get('reviews/{id}/comments', 'ReviewController@comments');
+    Route::post('reviews/{id}/like', 'ReviewController@toggleLike');
+    Route::post('reviews/{id}/comments', 'ReviewController@addComment');
 
-    Route::get('orders/{id}', 'OrderController@show');
+
+    // promocode routes
+    Route::get('promocode', 'PromocodeController@index');
+
+    // attachment routes
+    Route::get('attachments/{id}/like', 'AttachmentController@likes');
+    Route::get('attachments/{id}/comments', 'AttachmentController@comments');
+    Route::post('attachments/{id}/like', 'AttachmentController@toggleLike');
+    Route::post('attachments/{id}/comments', 'AttachmentController@addComment');
 });
 
+// cuisines route
+Route::post('cuisines', 'CuisineController@store');
 
-Route::post('/cuisines', 'CuisineController@store');
 
-
-
+// Restaurant routes
 Route::resource('restaurants', 'RestaurantController');
-Route::get('/restaurants/{id}/cuisines', 'RestaurantController@cuisines');
+Route::get('restaurants/{id}/cuisines', 'RestaurantController@cuisines');
 Route::get('restaurants/{id}/address', 'RestaurantController@address');
 Route::post('restaurants/{id}/review', 'RestaurantController@addReview');
-
-
-
-Route::post('likes', 'LikeController@toggleLike');
-
-Route::post('comments', 'CommentController@store');
-
-Route::post('attachments', 'AttachmentController@store');

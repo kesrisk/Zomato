@@ -7,14 +7,23 @@ use App\State;
 
 class UserTransformer extends ApiTransformer{
 
+    private $districtRepository;
+    private $stateRepository;
+
+    public function __construct(DistrictRepository $districtRepository, StateRepository $stateRepository)
+    {
+        $this->districtRepository   = $districtRepository;
+        $this->stateRepository      = $stateRepository;
+    }
+
     public function address($data)
     {
         return $data->map(function($address){
             return [
                 'id'            => $address['id'],
                 'street'        => $address['street'],
-                'district'      => District::findOrFail($address['district_id'])->name,
-                'state'         => State::findOrFail($address['state_id'])->name,
+                'district'      => $this->districtRepository->find($address['district_id'])->name,
+                'state'         => $this->stateRepository->find($address['state_id'])->name,
             ];
         });
     }

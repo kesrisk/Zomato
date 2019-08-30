@@ -36,12 +36,12 @@ class ReviewController extends Controller
 
     public function addAttachments(Request $request, $id)
     {
-        return $this->create($this->repository->find($id), $request['image_url']);
+        return $this->createAttachment($this->repository->find($id), $request['image_url']);
     }
 
-    public function addComments(CreateCommentRequest $request, $id)
+    public function addComment(CreateCommentRequest $request, $id)
     {
-        return $this->create($this->repository->find($id), $request['comment']);
+        return $this->createComment($this->repository->find($id), $request['comment']);
     }
 
     public function toggleLike($id)

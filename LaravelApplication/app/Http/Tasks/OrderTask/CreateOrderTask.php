@@ -46,14 +46,14 @@ class CreateOrderTask{
         });
     }
 
-    public function discount($promocode_id)
+    public function discount($promocode)
     {
         $discountPercent = 0;
         $maxDiscount = 0;
 
-        if($promocode_id !== null)
+        if($promocode !== null)
         {
-            $promocode = $this->promocodeRepository->find($promocode_id);
+            $promocode = $this->promocodeRepository->findByName($promocode);
 
             $discountPercent = $promocode['discount'];
 
@@ -71,7 +71,7 @@ class CreateOrderTask{
     {
         $orderDetails = [
             'address_id'        => $data['address_id'],
-            'promocode_id'        => $data['promocode_id'],
+            'promocode'        => $data['promocode'],
             'total'             => $GLOBALS['total'],
             'final_total'       => $final_total
         ];
@@ -111,7 +111,7 @@ class CreateOrderTask{
 
         $cuisines = $this->transformCuisines($cuisines, $restaurant_id);
 
-        $discount = $data['promocode_id']? $this->discount($data['promocode_id']): 0;
+        $discount = $data['promocode']? $this->discount($data['promocode']): 0;
 
         $final_total = $GLOBALS['total'] - $discount;
 

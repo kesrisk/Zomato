@@ -37,9 +37,9 @@ class AttachmentController extends Controller
         return $this->like($this->repository->find($id));
     }
 
-    public function addComments(CreateCommentRequest $request, $id)
+    public function addComment(CreateCommentRequest $request, $id)
     {
-        return $this->create($this->repository->find($id), $request['comment']);
+        return $this->createComment($this->repository->find($id), $request['comment']);
     }
 
 }

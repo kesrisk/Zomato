@@ -8,13 +8,19 @@ trait LikeTrait{
 
     public function like($object)
     {
+        // dd($object);
+
         $query = $object->likes->where('user_id', Auth::user()->id)->first();
 
         if($query)
         {
-            return $query->delete();
+            $query->delete();
+
+            return response('success', 200);
         }
 
-        return $object->likes->create('user_id', Auth::user()->id);
+        $object->likes()->create(['user_id' => Auth::user()->id]);
+
+        return response('success', 200);
     }
 }

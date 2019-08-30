@@ -11,4 +11,9 @@ class PromocodeRepository{
     {
         return Promocode::findOrFail($id);
     }
+
+    public function findByName($name)
+    {
+        return Promocode::where('code', $name)->first();
+    }
 }

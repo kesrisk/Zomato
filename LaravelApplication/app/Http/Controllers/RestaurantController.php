@@ -119,6 +119,6 @@ class RestaurantController extends Controller
 
     public function addAttachment(Request $request, $id)
     {
-        return $this->create($this->repository->find($id), $request['image_url']);
+        return $this->createAttachment($this->repository->find($id), $request['image_url']);
     }
 }
