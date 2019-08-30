@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Attachment;
 use App\Http\Requests\CreateCommentRequest;
-use App\Like;
+use App\Http\Tasks\CommentTask\StoreCommentTask;
+use App\Http\Tasks\LikeTask\ToggleLikeTask;
 use App\Repositories\AttachmentRepository;
-use App\Traits\LikeTrait;
-use App\Traits\CommentTrait;
-use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
 
-    use CommentTrait, LikeTrait;
 
     private $repository;
 
@@ -22,24 +18,59 @@ class AttachmentController extends Controller
         $this->repository = $repository;
     }
 
+
+    /**
+     * get all likes associated with attachment
+     *
+     * @param $id as attachment_id
+     *
+     * @return response of all likes associated with attachment
+     */
     public function likes($id)
     {
         return $this->repository->likes($id);
     }
 
+
+    /**
+     * get all comments associated with attachment
+     *
+     * @param $id as attachment_id
+     *
+     * @return response of all comment associated with attachment
+     */
     public function comments($id)
     {
         return $this->repository->comments($id);
     }
 
-    public function toggleLike($id)
+
+    /**
+     * like/dislike an attachment
+     *
+     * @param attachmant_id
+     * @param App\Http\Tasks\LikeTask\ToggleLikeTask $task
+     *
+     * @return response 'success' and status code 200
+     */
+    public function toggleLike($id, ToggleLikeTask $task)
     {
-        return $this->like($this->repository->find($id));
+        return $task->handle($this->repository->find($id));
     }
 
-    public function addComment(CreateCommentRequest $request, $id)
+
+    /**
+     * add coment to an attachment
+     *
+     * @param attachmant_id
+     * @param App\Http\Tasks\CommentTask\StoreCommentTask $task
+     * @param App\Http\Requests\CreateCommentRequest $request
+     *
+     * @return response 'success' and status code 200
+     */
+    public function addComment(CreateCommentRequest $request, $id, StoreCommentTask $task)
     {
-        return $this->createComment($this->repository->find($id), $request['comment']);
+        return $task->handle($this->repository->find($id), $request['comment']);
     }
 
 }

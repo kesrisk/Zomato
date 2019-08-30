@@ -15,7 +15,7 @@ class ShowCartTask{
 
     public function handle($restaurant_id){
 
-        $cart = $this->repository->cart();
+        $cart = $this->repository->userCart();
 
         if($restaurant_id !== $cart['restaurant_id'])
         {

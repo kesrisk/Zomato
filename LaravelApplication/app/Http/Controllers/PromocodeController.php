@@ -14,6 +14,14 @@ class PromocodeController extends Controller
         $this->repository = $repository;
     }
 
+
+    /**
+     * return discount associated with the promocode
+     *
+     * @param Illuminate\Http\Request $request
+     *
+     * @return discount percentage, for invalid promocode returns 0
+     */
     public function index(Request $request)
     {
         $promocode = $request['promocode'];

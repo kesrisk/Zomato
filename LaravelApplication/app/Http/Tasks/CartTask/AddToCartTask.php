@@ -16,7 +16,7 @@ class AddToCartTask{
 
     public function handle($restaurant_id, $cuisine_id)
     {
-        $cart = $this->repository->cart();
+        $cart = $this->repository->userCart();
 
         if($cart->restaurant_id === $restaurant_id)
         {

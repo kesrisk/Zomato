@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\District;
+
 use App\Http\Requests\CreateRestaurantRequest;
+use App\Http\Tasks\AttachmentTask\AddAttachmentTask;
 use App\Http\Tasks\CreateRestaurantTask;
 use App\Repositories\RestaurantRepository;
 use Illuminate\Http\Request;
-use App\Restaurant;
-use App\State;
 use App\Traits\AttachmentTrait;
 use App\Transformers\RestaurantTransformer;
 
@@ -96,7 +95,13 @@ class RestaurantController extends Controller
 
     }
 
-
+    /**
+     * get restaurants attachments
+     *
+     * @param restaurant_id $id
+     *
+     * @return collection of attachment associated with restaurant
+     */
     public function attachments($id)
     {
 
@@ -104,6 +109,13 @@ class RestaurantController extends Controller
     }
 
 
+    /**
+     * get restaurant address
+     *
+     * @param restaurant_id $id
+     *
+     * @return address object
+     */
     public function address($id)
     {
 
@@ -111,14 +123,35 @@ class RestaurantController extends Controller
     }
 
 
+    /**
+     * add review to restaurant
+     *
+     * @param Illuminate\Http\Request $request
+     * @param restaurant_id $id
+     *
+     * @return response 'success' with status code
+     */
     public function addReview($id, Request $request)
     {
 
-        return $this->repository->addReview($id, $request->all());
+        $this->repository->addReview($id, $request->all());
+        return response('success', 200);
     }
 
-    public function addAttachment(Request $request, $id)
+
+    /**
+     * add attachment to the restaurant
+     *
+     * @param Illuminate\Http\Request $request
+     * @param restaurant_id $id
+     * @param App\Http\Tasks\AttachmentTask\AddAttachmentTask $task
+     *
+     * @return response 'success' and response code
+     */
+    public function addAttachment(Request $request, $id, AddAttachmentTask $task)
     {
-        return $this->createAttachment($this->repository->find($id), $request['image_url']);
+        $task->handle($this->repository->find($id), $request['image_url']);
+
+        return response('success', 200);
     }
 }

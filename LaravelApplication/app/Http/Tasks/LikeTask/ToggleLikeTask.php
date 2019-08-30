@@ -2,9 +2,14 @@
 
 namespace App\Http\Tasks\LikeTask;
 
-class ToggleLikeTask{
-    public function handle($data)
-    {
+use App\Traits\LikeTrait;
 
+class ToggleLikeTask{
+
+    use LikeTrait;
+
+    public function handle($instance)
+    {
+        return $this->like($instance);
     }
 }

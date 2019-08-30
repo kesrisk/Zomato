@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Auth;
 
 trait CommentTrait{
 
-    public function createComment($object, $comment)
+    public function createComment($instance, $comment)
     {
-        return $object->comments()->create(['comment' => $comment, 'user_id' => Auth::user()->id]);
+        $instance->comments()->create(['comment' => $comment, 'user_id' => Auth::user()->id]);
+        return response('success', 200);
     }
 }

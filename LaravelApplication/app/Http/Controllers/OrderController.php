@@ -20,13 +20,24 @@ class OrderController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     *get all orders
+     *
+     * @return collection of all orders
+     */
     public function index()
     {
 
         return $this->repository->orders();
     }
 
-
+    /**
+     * Show order details
+     *
+     * @param order $id
+     *
+     * @return collection of cuisines.
+     */
     public function show($id)
     {
         $order = $this->repository->find($id);
@@ -34,11 +45,18 @@ class OrderController extends Controller
         return $order->cuisines;
     }
 
+    /**
+     *store cuisine
 
-    public function store(Request $request, $restaurant_id, CreateOrderTask $task)
+     * @param Illuminate\Http\Request $request
+     * @param App\Http\Tasks\OrderTask\CreateOrderTask $task
+     *
+     * @return response 'success' with status code
+     */
+    public function store(Request $request, CreateOrderTask $task)
     {
 
-        return $task->handle($request->all(), intval($restaurant_id));
+        return $task->handle($request->all());
     }
 
 }

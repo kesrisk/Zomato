@@ -90,11 +90,13 @@ class CreateOrderTask{
     }
 
 
-    public function handle($data, $restaurant_id)
+    public function handle($data)
     {
+        $restaurant_id = $data['restaurant_id'];
+
         $GLOBALS['total'] = 0;
 
-        $cart = $this->cartRepository->cart();
+        $cart = $this->cartRepository->userCart();
 
 
         if ($cart['restaurant_id'] !== $restaurant_id)
