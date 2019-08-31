@@ -5,7 +5,6 @@ import { RegistrationFormComponent } from './registration-form/registration-form
 import { RouterModule } from '@angular/router';
 import { userRoute } from './user.route';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { UserService } from '../services/user.service';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 
 @NgModule({
@@ -25,7 +24,7 @@ import { AuthenticateComponent } from './authenticate/authenticate.component';
   ],
 
   providers: [
-    UserService
+
   ]
 })
 export class UserModule { }

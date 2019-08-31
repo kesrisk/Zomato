@@ -13,6 +13,10 @@ import { CuisineService } from './services/cuisine.service';
 import { AuthService } from './services/auth.service';
 import { CartModule } from './cart/cart.module';
 import { HeaderComponent } from './layout/header.component';
+import { AddressModule } from './address/address.module';
+import { UserModule } from './user/user.module';
+import { OrderService } from './services/order.service';
+import { OrderModule } from './order/order.module';
 
 @NgModule({
   declarations: [
@@ -25,13 +29,17 @@ import { HeaderComponent } from './layout/header.component';
     HttpClientModule,
     RestaurantModule,
     CuisineModule,
-    CartModule
+    CartModule,
+    AddressModule,
+    OrderModule
   ],
   providers: [
     ApiService,
     RestaurantService,
     CuisineService,
-    AuthService
+    AuthService,
+    UserModule,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

@@ -13,4 +13,6 @@ export class CuisinesListComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
 }

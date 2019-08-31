@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { RestaurantShowComponent } from './restaurant-show/restaurant-show.component';
 import { CuisineModule } from '../cuisine/cuisine.module';
 import { CartModule } from '../cart/cart.module';
+import { AddressModule } from '../address/address.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CartModule } from '../cart/cart.module';
     CommonModule,
     RouterModule,
     CuisineModule,
-    CartModule
+    CartModule,
+    AddressModule
   ],
   exports: [
     RestaurantIndexComponent,

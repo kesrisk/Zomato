@@ -16,10 +16,10 @@ export class UserService {
 
 
     getAddress(){
-        return this.api.get<any>('/address', 'getAddress');
+        return this.api.get<any>('/user/address', 'getAddress');
     }
 
     createAddress(data: any) {
-        return this.api.post<any>('/address', data, 'createAddress');
+        return this.api.post<any>('/user/address', data, 'createAddress');
     }
 }

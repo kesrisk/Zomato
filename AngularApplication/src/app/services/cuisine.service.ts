@@ -6,7 +6,7 @@ export class CuisineService {
 
   constructor(private api:ApiService) { }
 
-  get(restaurant_id) {
-
+  addToCart(restaurant_id, cuisine_id) {
+    return this.api.post('/carts/' + restaurant_id + '/' + cuisine_id, {}, 'add cuisine to cart');
   }
 }

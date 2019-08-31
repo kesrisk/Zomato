@@ -1,3 +1,26 @@
-<div class="container">
+<h2 class="container">Cart:</h2>
+
+<div class="container" *ngIf = "isLoggedIn">
+  <div *ngFor = "let cuisine of cuisines">
+    <div class="card border-info">
+      <div class="card-body">
+        <span>{{cuisine.name}}</span>
+        <span style="float: right">{{cuisine.cost}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="card bg-info">
+    <!-- <div class="card-body">
+      Total: <em>{{total}}</em>
+    </div> -->
+    <button class="btn btn-warning" (click) = "placeOrder()">Total: Rs.<em>{{total}}</em> &nbsp;&nbsp; place Order</button>
+  </div>
+</div>
+
+<div class="container" *ngIf = "!isLoggedIn">
+  <div class="card border-danger">
+    <p style="padding: 10px;">Please loggin to add cuisines to cart</p>
+    <button class="center btn btn-danger" [routerLink] = "['/users/signin']">Signin</button>
+  </div>
 
 </div>
