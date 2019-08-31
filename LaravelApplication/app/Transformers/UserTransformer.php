@@ -3,6 +3,8 @@
 namespace App\Transformers;
 
 use App\District;
+use App\Repositories\DistrictRepository;
+use App\Repositories\StateRepository;
 use App\State;
 
 class UserTransformer extends ApiTransformer{

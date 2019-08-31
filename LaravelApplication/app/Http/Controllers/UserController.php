@@ -77,4 +77,16 @@ class UserController extends Controller
         return $this->transformer->address($user->address);
     }
 
+
+    /**
+     * logout
+     */
+    public function logout()
+    {
+        $userTokens = Auth::user()->token();
+
+        $userTokens->revoke();
+
+        return response('logout successful', 200);
+    }
 }

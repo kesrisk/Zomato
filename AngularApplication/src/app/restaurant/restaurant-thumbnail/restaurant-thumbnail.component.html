@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="card" style="margin-top: 15px">
+    <!-- <img class="card-img-top" src="https://images-platform.99static.com/9VnLZVJjXMdwbbFHEbzKQCgmQvY=/3x3:2000x2000/500x500/top/smart/99designs-contests-attachments/83/83179/attachment_83179164" alt="Card image cap"> -->
+    <div class="card-body">
+      <h5 class="card-title"><a href="restaurant/{{restaurant.id}}/cuisines">{{restaurant.name}}</a></h5>
+      <p class="card-text overflow">{{restaurant.description}}</p>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-info btn-sm" style="float: right;" [routerLink] = "[restaurant.id, 'cuisines']">Order Online</button>
+    </div>
+  </div>
+</div>

@@ -56,7 +56,7 @@ class RestaurantController extends Controller
     public function cuisines($id)
     {
 
-        $data = $this->repository->find($id)->cuisines()->paginate(1);
+        $data = $this->repository->find($id)->cuisines()->paginate(20);
 
         return $this->transformer->transformPaginationList($data);
     }
