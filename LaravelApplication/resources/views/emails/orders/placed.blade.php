@@ -3,17 +3,19 @@
 
 order Id: {{$orderDetails->id}}
 
-@component('mail::panel')
 
 @foreach($cuisines as $cuisine)
-    <p>
+
+@component('mail::panel')
+
         cuisine: {{$cuisine['name']}} <br>
         Quantity: {{$cuisine['quantity']}} <br>
         Cost: {{$cuisine['cost']}}
-    </p>
-@endforeach
 
 @endcomponent
+
+@endforeach
+
 
 @component('mail::panel')
 

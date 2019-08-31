@@ -27,8 +27,8 @@ class CreateRestaurantRequest extends FormRequest
             'name'          => 'required',
             'description'   => 'required',
             'phone_number'  => 'required',
-            'state_id'      => 'required',
-            'district_id'   => 'required',
+            'state'      => 'required',
+            'district'   => 'required',
             'street'        => 'required'
         ];
     }

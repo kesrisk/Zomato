@@ -33,9 +33,5 @@ class SendMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.orders.placed');
-        //             ->with([
-        //                 'orderDetails'  => $this->orderDetails,
-        //                 'cuisines'      => $this->cuisines
-        // ]);
     }
 }

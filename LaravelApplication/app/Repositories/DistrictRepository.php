@@ -18,4 +18,50 @@ class DistrictRepository{
     {
         return District::findOrFail($id);
     }
+
+    /**
+     * find district by name
+     *
+     * @param district_name $name
+     *
+     * @return District instance or null
+     */
+    public function findByName($name)
+    {
+        return District::where('name', $name)->first();
+    }
+
+    /**
+     * create district
+     *
+     * @param data $data
+     *
+     * @return District instance
+     */
+    public function create($data)
+    {
+        return District::create($data);
+    }
+
+
+    /**
+     * get District id by name
+     *
+     * @param District_name $name
+     * @param State_id $state_id
+     *
+     * @return district_id
+     */
+    public function getId($name, $state_id)
+    {
+
+        $district = $this->findByName($name);
+
+        if(!$district)
+        {
+            return $this->create(['name' => $name, 'hh' => $state_id])->id;
+        }
+
+        return $district['id'];
+    }
 }

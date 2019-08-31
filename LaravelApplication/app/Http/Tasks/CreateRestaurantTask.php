@@ -19,8 +19,8 @@ class CreateRestaurantTask
 
         $this->createAddress($restaurant,
         [
-            'state_id'      => $data['state_id'],
-            'district_id'   => $data['district_id'],
+            'state'      => $data['state'],
+            'district'   => $data['district'],
             'street'        => $data['street'],
         ]);
 
