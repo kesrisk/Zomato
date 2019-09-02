@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Tasks\OrderTask\CreateOrderTask;
+use App\Http\Tasks\OrderTask\ShowOrderTask;
 use App\Jobs\SendEmailJob;
 use App\Order;
-use App\Promocode;
 use App\Repositories\OrderRepository;
+use App\Transformers\OrderDetailsTransformer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 
 class OrderController extends Controller
 {
     private $repository;
+    private $transformer;
 
-    public function __construct(OrderRepository $repository)
+    public function __construct(OrderRepository $repository, OrderDetailsTransformer $transformer)
     {
         $this->repository = $repository;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -39,11 +40,12 @@ class OrderController extends Controller
      *
      * @return collection of cuisines.
      */
-    public function show($id)
+    public function show($id, ShowOrderTask $task)
     {
-        $order = $this->repository->find($id);
+        $data = $task->handle($id);
 
-        return $order->cuisines;
+        return $this->transformer->transform($data['cuisines'], $data['address']);
+
     }
 
     /**

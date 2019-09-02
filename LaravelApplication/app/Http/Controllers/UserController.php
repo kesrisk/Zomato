@@ -56,8 +56,8 @@ class UserController extends Controller
     public function addAddress(CreateAddressRequest $request, StoreAddressTask $task)
     {
         $data = [
-            'state_id'      => $request['state_id'],
-            'district_id'   => $request['district_id'],
+            'state'      => $request['state'],
+            'district'   => $request['district'],
             'street'        => $request['street'],
         ];
         $task->handle(Auth::user(), $data);

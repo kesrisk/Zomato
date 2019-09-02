@@ -24,8 +24,8 @@ class CreateAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'state_id'      => 'required',
-            'district_id'   => 'required',
+            'state'      => 'required',
+            'district'   => 'required',
             'street'        => 'required'
 
         ];

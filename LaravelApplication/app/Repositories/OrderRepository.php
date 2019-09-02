@@ -65,4 +65,30 @@ class OrderRepository{
         return $order->cuisines()->attach([$id => ['cost' => $cost, 'quantity' => $quantity]]);
     }
 
+
+    // /**
+    //  * return order address
+    //  *
+    //  * @param App\Order $order
+    //  *
+    //  * @return address
+    //  */
+    // public function address($id)
+    // {
+
+    //     // return ;
+    // }
+
+    /**
+     * return order address
+     *
+     * @param App\Order $order
+     *
+     * @return cuisines
+     */
+    public function cuisines($order)
+    {
+        return $order->cuisines;
+    }
+
 }

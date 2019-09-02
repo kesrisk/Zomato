@@ -16,7 +16,7 @@ trait AddressTrait{
 
         $districtRepository     = new DistrictRepository();
 
-        $data['state_id'] = $stateRepository->getId($data['district']);
+        $data['state_id'] = $stateRepository->getId($data['state']);
 
         $data['district_id'] = $districtRepository->getId($data['district'], $data['state_id']);
 
