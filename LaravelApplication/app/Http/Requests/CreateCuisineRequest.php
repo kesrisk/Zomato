@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRestaurantRequest extends FormRequest
+class CreateCuisineRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,8 @@ class CreateRestaurantRequest extends FormRequest
         return [
             'name'          => 'required',
             'description'   => 'required',
-            'phone_number'  => 'required',
-            'state'         => 'required',
-            'district'      => 'required',
-            'street'        => 'required'
+            'restaurant_id' => 'required',
+            'cost'          => 'required'
         ];
     }
 }

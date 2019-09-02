@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Restaurant;
 use App\Traits\SaveAttachmentTrait;
+use Illuminate\Support\Facades\Auth;
 
 class RestaurantRepository{
 
@@ -84,7 +85,7 @@ class RestaurantRepository{
     public function addReview($id, $data)
     {
 
-        return $this->find($id)->reviews()->create($data);
+        return $this->find($id)->reviews()->create($data + ['user_id' => Auth::user()->id]);
     }
 
 

@@ -5,8 +5,9 @@
 use App\Address;
 use App\District;
 use App\State;
+use App\User as AppUser;
 use Faker\Generator as Faker;
-use Illuminate\Foundation\Auth\User;
+
 
 $factory->define(Address::class, function (Faker $faker) {
     return [
@@ -18,7 +19,7 @@ $factory->define(Address::class, function (Faker $faker) {
         },
         'street' => $faker->streetName,
         'addressable_id' => function() {
-            return Factory(User::class)->create()->id;
+            return Factory(AppUser::class)->create()->id;
         },
         'addressable_type' => 'users'
     ];

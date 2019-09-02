@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 // });
 
 
+// for test
+
+
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 
@@ -56,15 +59,16 @@ Route::middleware(['auth:api'])->group(function(){
     // Route::post('attachments/{id}/comments', 'AttachmentController@addComment');
 
 
-    // like routes
+    // like routes for attachments and likes
     Route::get('likes/{type}/{id}', 'LikeController@allLikes');
     Route::post('likes/{type}/{id}', 'LikeController@toggleLike');
 
-
-    // comment routes
+    // comment routes for attachments and likes
     Route::get('comments/{type}/{id}', 'CommentController@allComments');
     Route::post('comments/{type}/{id}', 'CommentController@store');
 
+    // Attachment routes for reviews and restaurants
+    Route::post('attachments/{type}/{id}', 'AttachmentController@store');
 
     // promocode routes
     Route::get('promocode', 'PromocodeController@index');
@@ -82,3 +86,4 @@ Route::post('cuisines', 'CuisineController@store');
 Route::resource('restaurants', 'RestaurantController');
 Route::get('restaurants/{id}/cuisines', 'RestaurantController@cuisines');
 Route::get('restaurants/{id}/address', 'RestaurantController@address');
+

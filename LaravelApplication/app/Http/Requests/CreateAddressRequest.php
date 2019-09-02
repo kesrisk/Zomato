@@ -26,7 +26,7 @@ class CreateAddressRequest extends FormRequest
         return [
             'state'      => 'required',
             'district'   => 'required',
-            'street'        => 'required'
+            // 'street'        => 'required'
 
         ];
     }

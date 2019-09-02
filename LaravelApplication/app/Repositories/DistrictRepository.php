@@ -59,7 +59,7 @@ class DistrictRepository{
 
         if(!$district)
         {
-            return $this->create(['name' => $name, 'hh' => $state_id])->id;
+            return $this->create(['name' => $name, 'state_id' => $state_id])->id;
         }
 
         return $district['id'];
