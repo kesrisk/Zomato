@@ -15,7 +15,7 @@ class Order extends Model
 
     public function cuisines()
     {
-        return $this->belongsToMany(Cuisine::class);
+        return $this->belongsToMany(Cuisine::class)->withPivot(['quantity', 'cost']);
     }
 
     public function address()

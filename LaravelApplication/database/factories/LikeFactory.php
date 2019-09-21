@@ -14,6 +14,6 @@ $factory->define(Like::class, function (Faker $faker) {
         'likeable_id' => function() {
             return Factory(\App\Review:: class)->create()->id;
         },
-        'likeable_type' => 'App\Review',
+        'likeable_type' => 'reviews',
     ];
 });

@@ -14,7 +14,7 @@ $factory->define(Comment::class, function (Faker $faker) {
         'commentable_id' => function() {
             return Factory(\App\Review:: class)->create()->id;
         },
-        'commentable_type' => 'App\Review',
+        'commentable_type' => 'reviews',
         'comment' => $faker->paragraph,
     ];
 });

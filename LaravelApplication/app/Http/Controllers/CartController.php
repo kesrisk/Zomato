@@ -2,68 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Tasks\CartTask\AddToCartTask;
+use App\Http\Tasks\CartTask\ShowCartTask;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Transformers\CartTransformer;
 
 class CartController extends Controller
 {
+    private $transform;
 
-    public function index()
-    {
-        $user = Auth::user();
+    public function __construct(CartTransformer $transform){
 
-        $cart = $user->cart;
-
-        $cuisines = $cart->cuisines;
-
-        //cost of cuisine????
-        $restaurant_id = $cart['restaurant_id'];
-
-        return $cuisines->map(function($cuisine) use ($restaurant_id){
-
-            $costQuerry = DB::table('cuisine_restaurant')->where('cuisine_id', $cuisine['id'])->where('restaurant_id', $restaurant_id)->get('cost');
-
-            $cost = $costQuerry[0]->cost;
-
-            return [
-                'id' => $cuisine['id'],
-                'name' => $cuisine['name'],
-                'description' => $cuisine['description'],
-                'quantity' => $cuisine->pivot['quantity'],
-                'cost' => $cost,
-            ];
-        });
-
+        $this->transform = $transform;
     }
 
-    public function addToCart(Request $request, $restaurant_id, $cuisine_id)
+
+    /**
+     * get cart cuisines
+     *
+     * @param restaurant_id
+     * @param App\Http\Tasks\CartTask\ShowCartTask $task
+     *
+     * @return collection of all the cuisines present in cart
+     */
+    public function index($restaurant_id, ShowCartTask $task)
     {
-        $user = Auth::user();
+        $data = $task->handle(intval($restaurant_id));
 
-        $cart = $user->cart;
-
-        $restaurant_id = intVal($restaurant_id);
-
-        if($cart->restaurant_id === null || $cart->restaurant_id == $restaurant_id)
+        if($data)
         {
-            if($cart->restautant_id === null)
-            {
-                $cart->update(['restaurant_id' => $restaurant_id]);
-            }
-
-            $cart->cuisines()->attach($cuisine_id, ['quantity'=>1]);
-
-            return ['message' => 'successfully added to cart'];
+            return $this->transform->transformCollection($data['cuisines'], ['restaurant_id'=>$data['restaurant_id']], true);
         }
 
-        $user->cart->cuisines()->detach();
+        return [];
+    }
 
-        $cart->update(['restaurant_id' => $restaurant_id]);
+    /**
+     * add cuisines to cart
+     *
+     * @param restaurant_id
+     * @param cuisine_id
+     * @param App\Http\Tasks\CartTask\AddToCartTask $task
+     *
+     * @return response 'success' and status code 200
+     */
+    public function addToCart(Request $request, $restaurant_id, $cuisine_id, AddToCartTask $task)
+    {
 
-        $cart->cuisines()->attach($cuisine_id);
-
-        return ['message' => 'successfully added to cart'];
+        return $task->handle(intval($restaurant_id), $cuisine_id);
     }
 
 

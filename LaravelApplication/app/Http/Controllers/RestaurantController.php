@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\District;
+
 use App\Http\Requests\CreateRestaurantRequest;
+use App\Http\Tasks\AttachmentTask\AddAttachmentTask;
 use App\Http\Tasks\CreateRestaurantTask;
+use App\Repositories\RestaurantRepository;
 use Illuminate\Http\Request;
-use App\Restaurant;
-use App\State;
+use App\Traits\AttachmentTrait;
 use App\Transformers\RestaurantTransformer;
 
 class RestaurantController extends Controller
 {
+    use AttachmentTrait;
 
     private $transformer;
+    private $repository;
 
-    public function __construct(RestaurantTransformer $transformer)
+    public function __construct(RestaurantTransformer $transformer, RestaurantRepository $repository)
     {
         $this->transformer = $transformer;
+        $this->repository = $repository;
     }
 
     /**
@@ -27,7 +31,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return response(Restaurant::all());
+        return response($this->repository->all());
     }
 
 
@@ -40,7 +44,7 @@ class RestaurantController extends Controller
     public function store(CreateRestaurantRequest $request, CreateRestaurantTask $task)
     {
 
-        return $this->transformer->store($task->handle($request->all()));
+        return $task->handle($request->all());
     }
 
     /**
@@ -52,7 +56,8 @@ class RestaurantController extends Controller
     public function cuisines($id)
     {
 
-        $data = Restaurant::findOrFail($id)->cuisines()->paginate(1);
+        $data = $this->repository->find($id)->cuisines()->paginate(20);
+
         return $this->transformer->transformPaginationList($data);
     }
 
@@ -90,23 +95,63 @@ class RestaurantController extends Controller
 
     }
 
-
+    /**
+     * get restaurants attachments
+     *
+     * @param restaurant_id $id
+     *
+     * @return collection of attachment associated with restaurant
+     */
     public function attachments($id)
     {
-        return Restaurant::findOrFail($id)->attachments;
+
+        return $this->repository->attachments($id);
     }
 
 
+    /**
+     * get restaurant address
+     *
+     * @param restaurant_id $id
+     *
+     * @return address object
+     */
     public function address($id)
     {
-        return Restaurant::findOrFail($id)->address;
+
+        return $this->repository->address($id);
     }
 
 
+    /**
+     * add review to restaurant
+     *
+     * @param Illuminate\Http\Request $request
+     * @param restaurant_id $id
+     *
+     * @return response 'success' with status code
+     */
     public function addReview($id, Request $request)
     {
-        $restaurant = Restaurant::findOrFail($id);
 
-        return $restaurant->reviews()->create($request->all());
+        $this->repository->addReview($id, $request->all());
+        return response('success', 200);
+    }
+
+
+    /**
+     * add attachment to the restaurant
+     *
+     * @param Illuminate\Http\Request $request
+     * @param restaurant_id $id
+     * @param App\Http\Tasks\AttachmentTask\AddAttachmentTask $task
+     *
+     * @return response 'success' and response code
+     */
+    public function addAttachment(Request $request, $id, AddAttachmentTask $task)
+    {
+        $task->handle($this->repository->find($id), $request['image_url']);
+
+        return response('success', 200);
     }
 }

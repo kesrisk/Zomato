@@ -2,45 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use App\Like;
-use App\Review;
+use App\Http\Requests\CreateCommentRequest;
+use App\Http\Tasks\AttachmentTask\AddAttachmentTask;
+use App\Http\Tasks\CommentTask\StoreCommentTask;
+use App\Http\Tasks\LikeTask\ToggleLikeTask;
+use App\Repositories\ReviewRepository;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
+    public $repository;
+
+    public function __construct(ReviewRepository $repository)
+    {
+
+        $this->repository = $repository;
+    }
+
+
+    /**
+     * get comment of review
+     *
+     * @param review_id $id
+     *
+     * @return collection of comments
+     */
     public function comments($id)
     {
-        $review = Review::findOrFail($id);
-        return $review->comments;
+
+        return $this->repository->comments($id);
     }
 
+    /**
+     * add attachment to the restaurant
+     *
+     * @param review_id $id
+     *
+     * @return collection of likes
+     */
     public function likes($id)
     {
-        $review = Review::findOrFail($id);
-        return $review->likes;
+
+        return $this->repository->likes($id);
     }
 
-    // public function storeComment($id, Request $request)
-    // {
-    //     $review = Review::findOrFail($id);
-    //     return $review->comments()->create($request->all());
-    // }
 
-    // public function toggleLike($id, Request $request)
-    // {
-    //     $user_id = $request['user_id'];
-    //     $review = Review::findOrFail($id);
-    //     $likes = $this->likes($id);
+    /**
+     * add attachment to the review
+     *
+     * @param Illuminate\Http\Request $request
+     * @param review_id $id
+     * @param App\Http\Tasks\AttachmentTask\AddAttachmentTask $task
+     *
+     * @return response 'success' and response code
+     */
+    public function addAttachments(Request $request, $id, AddAttachmentTask $task)
+    {
+        $task->handle($this->repository->find($id), $request['image_url']);
 
-    //     $likes = $likes->firstWhere('user_id' , $user_id);
+        return response('success', 200);
+    }
 
-    //     if ($likes !== null)
-    //     {
-    //         Like::findOrFail($likes->id)->delete();
-    //         return ['like removed' => true];
-    //     }
-    //     $review->likes()->create(['user_id' => $request['user_id']]);
-    //     return ['like_added' => true];
+    /**
+     * add comment to the review
+     *
+     * @param App\Http\Requests\CreateCommentRequest $request
+     * @param review_id $id
+     * @param App\Http\Tasks\AttachmentTask\AddAttachmentTask $task
+     *
+     * @return response 'success' and response code
+     */
+    public function addComment(CreateCommentRequest $request, $id, StoreCommentTask $task)
+    {
+        $task->handle($this->repository->find($id), $request['comment']);
 
-    // }
+        return response('success', 200);
+    }
+
+
+    /**
+     * toggle likes of review
+     *
+     * @param review_id $id
+     * @param App\Http\Tasks\LikeTask\ToggleLikeTask $task
+     *
+     * @return response 'success' and response code
+     */
+    public function toggleLike($id, ToggleLikeTask $task)
+    {
+
+        $task->handle($this->repository->find($id));
+
+        return response('success', 200);
+    }
 }

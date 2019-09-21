@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAddressRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Tasks\UserTask\CreateAddressTask;
+use App\Http\Tasks\AddressTask\StoreAddressTask;
 use App\Http\Tasks\UserTask\LoginTask;
 use App\Http\Tasks\UserTask\RegisterTask;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
     private $transformer;
 
     public function __construct(UserTransformer $transformer)
@@ -52,9 +53,14 @@ class UserController extends Controller
      *
      * @return response user address
      */
-    public function addAddress(Request $request, CreateAddressTask $task)
+    public function addAddress(CreateAddressRequest $request, StoreAddressTask $task)
     {
-        return $task->handle($request->all());
+        $data = [
+            'state'      => $request['state'],
+            'district'   => $request['district'],
+            'street'        => $request['street'],
+        ];
+        $task->handle(Auth::user(), $data);
     }
 
     /**
@@ -71,4 +77,16 @@ class UserController extends Controller
         return $this->transformer->address($user->address);
     }
 
+
+    /**
+     * logout
+     */
+    public function logout()
+    {
+        $userTokens = Auth::user()->token();
+
+        $userTokens->revoke();
+
+        return response('logout successful', 200);
+    }
 }

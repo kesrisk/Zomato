@@ -1,0 +1,14 @@
+<div>
+  <div class="card" style="margin-top: 15px">
+    <!-- <img class="card-img-top" src="https://images-platform.99static.com/9VnLZVJjXMdwbbFHEbzKQCgmQvY=/3x3:2000x2000/500x500/top/smart/99designs-contests-attachments/83/83179/attachment_83179164" alt="Card image cap"> -->
+    <div class="card-body">
+      <h5 class="card-title">{{cuisine.name}}</h5>
+      <p class="card-text overflow">{{cuisine.description}}</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">Cost: </small> <em>${{cuisine.cost}}</em>
+        <button class="btn btn-info btn-sm" style="float: right;" (click) = "addToCart()" *ngIf = "addedToCart === false">Add to cart</button>
+        <button class="btn btn-info btn-sm" style="float: right;" *ngIf = "addedToCart === true">Added</button>
+    </div>
+  </div>
+</div>

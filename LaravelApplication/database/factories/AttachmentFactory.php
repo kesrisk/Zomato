@@ -12,6 +12,6 @@ $factory->define(Attachment::class, function (Faker $faker) {
         'attachable_id' => function(){
             return factory(Review::class)->create()->id;
         },
-        'attachable_type' => 'App\Review',
+        'attachable_type' => 'reviews',
     ];
 });

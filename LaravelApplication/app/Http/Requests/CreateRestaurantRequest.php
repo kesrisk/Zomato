@@ -24,12 +24,12 @@ class CreateRestaurantRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
-            'phone_number' => 'required',
-            'state_id' => 'required',
-            'district_id' => 'required',
-            'street' => 'required'
+            'name'          => 'required',
+            'description'   => 'required',
+            'phone_number'  => 'required',
+            'state'         => 'required',
+            'district'      => 'required',
+            'street'        => 'required'
         ];
     }
 }

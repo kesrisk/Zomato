@@ -31,7 +31,7 @@ class Review extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function attachment()
+    public function attachments()
     {
         return $this->morphMany(Attachment:: class, 'attachable');
     }
